@@ -141,7 +141,7 @@ class Circle {
 
 let genCircles = function (color, speed, size) {
     for (let i = 0; i < Math.floor((WINDOW_WIDTH / 20)); i++) {
-        let circle = new Circle(50 * i - 100, randomNumber(300, 990), size, speed, color);
+        let circle = new Circle(50 * i - 100, randomNumber(300, WINDOW_HEIGHT), size, speed, color);
         circle_list.push(circle);
         circle.draw(ctx);
     }
@@ -183,16 +183,67 @@ let canvasAnimation = function () {
 canvasAnimation();
 
 /* Carousel */
+let current_index = 0;
 
-const images = document.querySelectorAll(".carousel img");
-let current_image = 0;
+function senseChooser() {
+    if (current_index >= maxIndex) {
+        current_index = -1;
+    }
+    return "down"
 
-function nextImage() {
-    images[current_image].classList.remove("active");
-    current_image = (current_image + 1) % images.length;
-    images[current_image].classList.add("active");
 }
-setInterval(nextImage, 5000);
 
+function swipe(sense) {
+
+    if (!sense) {
+        sense = senseChooser();
+    }
+
+    if (sense === "down") {
+        current_index++;
+    }
+    if (sense === "up") {
+        current_index--;
+    }
+
+
+    if (current_index < 0) {
+        current_index = 0
+    }
+
+    if (current_index >= maxIndex) {
+        current_index = maxIndex
+    }
+    slider.style.transition = 'transform ease 1s';
+    slider.style.transform = `translateY(-${card_height * current_index}px)`;
+
+
+}
+const card_height = document.querySelector(".card").offsetHeight;
+const next_card_btn_top = document.getElementById('next_card_btn_top');
+const next_card_btn_bottom = document.getElementById('next_card_btn_bottom');
+const slider = document.getElementById('slider');
+const maxIndex = slider.children.length - 1;
+let swipe_timeout_id
+
+
+next_card_btn_bottom.addEventListener('click', () => swipe("down"))
+
+
+next_card_btn_top.addEventListener('click', () => swipe("up"))
+
+function loopWidthTimeout() {
+    swipe_timeout_id = setTimeout(loopWidthTimeout, 10000);
+    swipe()
+
+}
+loopWidthTimeout();
+
+document.getElementById('slider-section').addEventListener('mouseenter', () => {
+    clearTimeout(swipe_timeout_id)
+});
+document.getElementById('slider-section').addEventListener('mouseleave', () => {
+    swipe_timeout_id = setTimeout(loopWidthTimeout, 5000);
+})
 
 

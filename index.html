@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles/style.css">
-    <title>Programming Club</title>
+    <title>Clube de Programação</title>
 </head>
 <body>
 <canvas id="canvas"></canvas>
@@ -12,21 +12,23 @@
 <!-- Header Section -->
 <header>
     <section class="header--title">
-        <h1>Programming Club</h1>
+        <h1>Developer's Club</h1>
         <p>Code. Create. Collaborate.</p>
     </section>
 
-    <section class="carousel">
-        <ul class="carousel__list">
+    <section class="carousel-section" id="slider-section">
+        <button class="carousel__btn" id="next_card_btn_top">↓</button>
+        <div class="carousel">
+        <ul class="carousel__list" id="slider">
             <li class="card">
                 <a href="" class="card__link">
-                    <img src="images/200x200.png" alt="Card Image" width="200" height="200">
-                    <p class="badge">badge</p>
-                    <h3>Card Title</h3>
+                    <img src="images/img.png" alt="Card Image" width="1779" height="785">
+                    <p class="badge">28 / 9 / 2025</p>
+                    <h3>Criação do Website</h3>
                 </a>
             </li>
 
-            <li class="carousel__item">
+            <li class="card">
                 <a href="" class="card__link">
                     <img src="images/mask_400x400.jpg" alt="Card Image" width="400" height="400">
                     <p class="badge">badge</p>
@@ -34,15 +36,16 @@
                 </a>
 
             </li>
-            <li class="carousel__item">
+            <li class="card">
                 <a href="" class="card__link">
-                    <img src="images/spiral_200x200.png" alt="Card Image" width="210" height="208">
+                    <img src="images/boy_200x200.png" alt="Card Image" width="850" height="850">
                     <p class="badge">badge</p>
                     <h3>Card Title</h3>
                 </a>
             </li>
         </ul>
-
+        </div>
+        <button class="carousel__btn" id="next_card_btn_bottom">↓</button>
 
     </section>
 </header>
@@ -51,18 +54,24 @@
 <!-- Navigation Menu -->
 <nav class="navbar">
     <ul>
-        <li><a href="#about">About</a></li>
-        <li><a href="#events">Events</a></li>
-        <li><a href="#members">Members</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#about">Sobre Nós</a></li>
+        <li><a href="#events">Eventos</a></li>
+        <li><a href="#members">Membros</a></li>
+        <li><a href="#contact">Contacta-nos</a></li>
     </ul>
 </nav>
 
 <!-- About Section -->
-<section id="about">
-    <h2>About Us</h2>
-    <p>The Programming Club is a student-run organization that
-        brings together coders, developers, and tech enthusiasts.</p>
+<section id="about" class="about">
+    <h2>Sobre Nós</h2>
+    <p>O clube de programação, ou developers club, é um projeto criado por estudantes com o intuito de aprender, praticar e colaborar sobre topicos relacionados com tecnologia.</p>
+    <h3>Objectivos:</h3>
+    <ul class="goals">
+        <li>Melhorar abilidades de programação</li>
+        <li>Aprender novas tecnologias</li>
+        <li>Colaborar em projetos</li>
+        <li>Explorar aplicações do código no mundo</li>
+    </ul>
 </section>
 
 <!-- Events Section -->
@@ -101,7 +110,7 @@
 
 <!-- Footer Section -->
 <footer>
-    <p>&copy; 2025 Programming Club. All rights reserved.</p>
+    <p> ~~~~ &copy; 2025 Developer's Club. All rights reserved. ~~~~ </p>
 </footer>
 </main>
 </body>
