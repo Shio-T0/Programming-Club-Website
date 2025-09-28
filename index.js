@@ -1,15 +1,11 @@
-
 /* CANVAS */
 
 let canvas = document.getElementById("canvas");
 
 let ctx = canvas.getContext("2d");
 
-const WINDOW_HEIGHT = window.innerHeight;
-const WINDOW_WIDTH = window.innerWidth;
-
-canvas.height = WINDOW_HEIGHT;
-canvas.width = WINDOW_WIDTH;
+let WINDOW_HEIGHT = window.innerHeight;
+let WINDOW_WIDTH = window.innerWidth;
 
 let circle_list = [];
 
@@ -52,40 +48,50 @@ const DISLOCATIONS = {
 }
 
 
-
-
-
-
 let randomNumber = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 class Circle {
-    constructor(posX, posY, radius, speed, color) {
-        this.posX = posX;
-        this.posY = posY;
+    constructor(startX, startY, radius, speed, color) {
+        this.startX = startX;
+        this.posX = startX;
+
+        this.startY = startY;
+        this.posY = startY;
+
         this.radius = radius;
         this.color = color;
 
         this.dy = 1 * speed
         this.dx = 1 * speed
 
-        this.opacity = (Math.random() * (0.9 + 1 ));
+        this.opacity = (Math.random() * (0.90 - 0.10 + 1) - 0.10);
+        this.blur = 20
         this.preset = randomNumber(1, 4);
+        this.trail = [];
+        this.maxTrailLength = 500;
+
     }
 
     draw(ctx) {
-        ctx.beginPath();
-        ctx.globalAlpha = this.opacity;
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = this.color;
-        ctx.fillStyle = this.color;
-        ctx.arc(this.posX, this.posY, this.radius,0,  Math.PI * 2);
-        ctx.fill();
-        ctx.closePath();
+        if (this.trail.length > 1) {
+            ctx.beginPath();
+            ctx.globalAlpha = this.opacity;
+            ctx.strokeStyle = "#6B52AF";
+            ctx.lineWidth = 2;
+
+            ctx.moveTo(this.trail[0].x, this.trail[0].y);
+            for (let i = 1; i < this.trail.length; i++) {
+                ctx.lineTo(this.trail[i].x, this.trail[i].y);
+            }
+
+            ctx.stroke();
+            ctx.closePath();
+        }
     }
-    
-    update(ctx) {
+
+    path() {
         this.posY -= this.dy;
         if (
             (this.posY >= DISLOCATIONS[this.preset][0][0] && this.posY < DISLOCATIONS[this.preset][0][1])
@@ -93,7 +99,7 @@ class Circle {
             (this.posY >= DISLOCATIONS[this.preset][1][0] && this.posY < DISLOCATIONS[this.preset][1][1])
             ||
             (this.posY >= DISLOCATIONS[this.preset][2][0] && this.posY < DISLOCATIONS[this.preset][2][1])
-            ) {
+        ) {
             this.posX += this.dx;
         }
 
@@ -106,9 +112,27 @@ class Circle {
         ) {
             this.posX -= this.dx;
         }
-        if (this.posY >= 0) {
+    }
+
+    update() {
+        if (this.posY >= -500) {
+            this.path();
+
+            this.trail.push({ x: this.posX, y: this.posY });
+            if (this.trail.length > this.maxTrailLength) {
+                this.trail.shift();
+            }
+
             this.draw(ctx)
         }
+        else {
+            this.trail = []
+            this.posY = this.startY;
+            this.posX = this.startX;
+        }
+
+
+
 
 
     }
@@ -117,19 +141,58 @@ class Circle {
 
 let genCircles = function (color, speed, size) {
     for (let i = 0; i < Math.floor((WINDOW_WIDTH / 20)); i++) {
-        let circle = new Circle( 50 * i - 100, randomNumber(300, 990), size, speed, color);
+        let circle = new Circle(50 * i - 100, randomNumber(300, 990), size, speed, color);
         circle_list.push(circle);
         circle.draw(ctx);
     }
 }
 
-genCircles("#6B52AF", 1, 1.5);
+
+function resizeCanvas() {
+    WINDOW_HEIGHT = window.innerHeight;
+    WINDOW_WIDTH = window.innerWidth;
+    const dpr = window.devicePixelRatio || 1;
+
+    canvas.style.width = `${WINDOW_WIDTH}px`;
+    canvas.style.height = `${WINDOW_HEIGHT}px`;
+    canvas.height = WINDOW_HEIGHT;
+    canvas.width = WINDOW_WIDTH;
+
+    canvas.width = canvas.width * dpr;
+    canvas.height = canvas.height * dpr;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    circle_list = []
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
+    genCircles("black", 1, 3);
+}
+
+resizeCanvas()
+addEventListener("resize", resizeCanvas);
+
 
 let canvasAnimation = function () {
     requestAnimationFrame(canvasAnimation);
-
+    ctx.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     circle_list.forEach(circle => circle.update(ctx))
+
 }
 
 canvasAnimation();
+
+/* Carousel */
+
+const images = document.querySelectorAll(".carousel img");
+let current_image = 0;
+
+function nextImage() {
+    images[current_image].classList.remove("active");
+    current_image = (current_image + 1) % images.length;
+    images[current_image].classList.add("active");
+}
+setInterval(nextImage, 5000);
+
+
+
