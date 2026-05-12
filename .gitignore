@@ -1,0 +1,7 @@
+# local-only config (admin credentials, etc.) — never commit
+*.local.json
+
+# editor / OS noise
+.DS_Store
+.idea/
+.vscode/
