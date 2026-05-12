@@ -938,15 +938,18 @@ footer .hint {
 }
 footer .hint:hover { opacity: 1; color: var(--purple); }
 
-/* ===== reveal ===== */
+/* ===== reveal =====
+   Only hide reveal elements when JS is running. Without JS (or if the
+   script throws before block 3), content stays fully visible — better
+   to skip the animation than to leave the page blank. */
 
-.reveal {
+html.js .reveal {
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.8s cubic-bezier(.16,.84,.44,1),
                 transform 0.8s cubic-bezier(.16,.84,.44,1);
 }
-.reveal.visible {
+html.js .reveal.visible {
     opacity: 1;
     transform: translateY(0);
 }

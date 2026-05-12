@@ -271,6 +271,19 @@ if (typed && !prefersReducedMotion) {
    =========================================================== */
 
 const reveals = document.querySelectorAll('.reveal');
+
+function inInitialViewport(el) {
+    const r = el.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    // 40px margin matches the IO rootMargin below
+    return r.top < (vh - 40) && r.bottom > 0;
+}
+
+// Reveal anything already in the viewport immediately — IO's first callback
+// fires async (microtask + render), which is too slow on first paint and
+// occasionally never on some engines/snapshots.
+reveals.forEach((el) => { if (inInitialViewport(el)) el.classList.add('visible'); });
+
 if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
         for (const e of entries) {
@@ -280,7 +293,9 @@ if ('IntersectionObserver' in window) {
             }
         }
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    reveals.forEach((el) => io.observe(el));
+    reveals.forEach((el) => {
+        if (!el.classList.contains('visible')) io.observe(el);
+    });
 } else {
     reveals.forEach((el) => el.classList.add('visible'));
 }
@@ -349,7 +364,7 @@ tiltCards.forEach((card) => {
    =========================================================== */
 
 const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
-const sectionTargets = ['top', 'identity', 'journey', 'next', 'join']
+const sectionTargets = ['top', 'identity', 'journey', 'events', 'next', 'join']
     .map((id) => document.getElementById(id))
     .filter(Boolean);
 
