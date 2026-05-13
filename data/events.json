@@ -1,12 +1,12 @@
 {
   "events": [
     {
-      "id": "ev-2025-10-08-kickoff",
-      "date": "2025-10-08",
-      "title": "Começo do Clube",
-      "category": "kickoff",
-      "description": "Primeira sessão do ano letivo. Apresentação dos pilares do clube, dos projetos do ano anterior e do que aí vem. Esperamos novos rostos.",
-      "tags": ["onboarding", "kickoff"]
+      "id": "ev-2026-09-17-entrada-no-novo-ano-letivo-w75n",
+      "date": "2026-09-17",
+      "title": "Entrada no Novo Ano Letivo",
+      "category": "novo ano",
+      "description": "Para começar o novo ano em grande, será divulgado o projeto previamente",
+      "tags": []
     }
   ]
 }

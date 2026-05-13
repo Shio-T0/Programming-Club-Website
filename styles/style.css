@@ -979,7 +979,10 @@ html.js .reveal.visible {
         background: rgba(10, 10, 15, 0.95);
         backdrop-filter: blur(18px);
         border-bottom: 1px solid var(--border);
-        transform: translateY(-110%);
+        /* translate by own height + the 60px top offset so the panel fully
+           clears the viewport when closed — short menus (only a few links)
+           wouldn't clear with a plain -110%. */
+        transform: translateY(calc(-100% - 60px));
         transition: transform 0.4s cubic-bezier(.16,.84,.44,1);
     }
     .nav-links.open { transform: translateY(0); }

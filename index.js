@@ -550,7 +550,7 @@ function sortEvents(arr) {
 }
 
 function renderEvents() {
-    const list = $('events');
+    const list = $('events-list');
     const empty = $('events-empty');
     if (!list || !empty) return;
 
